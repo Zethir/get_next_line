@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:08:11 by cboussau          #+#    #+#             */
-/*   Updated: 2016/01/21 15:26:44 by cboussau         ###   ########.fr       */
+/*   Updated: 2016/01/22 13:19:41 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	find_line(int const fd, char **line, char **rest)
 	{
 		if (*rest)
 			ft_strdel(rest);
-		return (0);
+		return (ft_strlen(*line) != 0);
 	}
 	else if (ret == -1)
 		return (-1);
@@ -64,8 +64,6 @@ static int	find_line(int const fd, char **line, char **rest)
 			return (1);
 	}
 	*line = add_line(line, buffer, i, rest);
-	if (*line != NULL && (find_line(fd, line, rest) == 0))
-		return (1);
 	return (find_line(fd, line, rest));
 }
 
