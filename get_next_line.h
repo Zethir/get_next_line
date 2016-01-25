@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 15:38:03 by cboussau          #+#    #+#             */
-/*   Updated: 2016/01/21 14:55:47 by cboussau         ###   ########.fr       */
+/*   Updated: 2016/01/25 16:42:28 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "libft/libft.h"
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 100
 
 int	get_next_line(int const fd, char **line);
 

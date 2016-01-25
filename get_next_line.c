@@ -6,14 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:08:11 by cboussau          #+#    #+#             */
-/*   Updated: 2016/01/22 13:19:41 by cboussau         ###   ########.fr       */
+/*   Updated: 2016/01/25 16:34:49 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "get_next_line.h"
 
-static char	*add_line(char **line, char *buffer, int i, char **rest)
+static char	*addl(char **line, char *buffer, int i, char **rest)
 {
 	int			j;
 	char		*tmp;
@@ -41,13 +40,13 @@ static char	*add_line(char **line, char *buffer, int i, char **rest)
 
 static int	find_line(int const fd, char **line, char **rest)
 {
-	char		buffer[BUFF_SIZE + 1];
+	char		bf[BUFF_SIZE + 1];
 	int			i;
 	int			ret;
 
-	ft_bzero(buffer, BUFF_SIZE + 1);
-	i = -1;
-	ret = read(fd, buffer, BUFF_SIZE);
+	ft_bzero(bf, BUFF_SIZE + 1);
+	i = 0;
+	ret = read(fd, bf, BUFF_SIZE);
 	if (ret == 0)
 	{
 		if (*rest)
@@ -56,14 +55,15 @@ static int	find_line(int const fd, char **line, char **rest)
 	}
 	else if (ret == -1)
 		return (-1);
-	if (buffer[0] == '\n' && *line[0] == '\0')
+	if (bf[0] == '\n' && *line[0] == '\0' && (*line = addl(line, bf, i, rest)))
 		return (1);
-	while (buffer[++i] != '\0')
+	while (bf[i] != '\0')
 	{
-		if (buffer[i] == '\n' && (*line = add_line(line, buffer, i, rest)))
+		if (bf[i] == '\n' && (*line = addl(line, bf, i, rest)))
 			return (1);
+		i++;
 	}
-	*line = add_line(line, buffer, i, rest);
+	*line = addl(line, bf, i, rest);
 	return (find_line(fd, line, rest));
 }
 
@@ -118,7 +118,7 @@ static int	check_rest(char **rest, char **line, int const fd)
 int			get_next_line(int const fd, char **line)
 {
 	static char *rest;
-	
+
 	if (BUFF_SIZE < 0)
 		return (-1);
 	if (line == NULL)
